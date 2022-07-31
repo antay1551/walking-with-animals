@@ -12,4 +12,9 @@ class UserService
             $userAttributes
         );
     }
+
+    public function updateUser(array $userAttributes, User $user): void
+    {
+        $user->update($userAttributes);
+    }
 }
