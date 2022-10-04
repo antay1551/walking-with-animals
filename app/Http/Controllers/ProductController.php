@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -61,6 +62,17 @@ class ProductController extends Controller
     }
 
     public function checkout()
+    {
+        $order = Order::query()
+            ->with('product')
+            ->whereNull('payed_at')
+            ->latest()
+            ->firstOrFail();
+
+        return view('product.checkout', compact('order'));
+    }
+
+    public function pay()
     {
         return view('product.checkout');
     }

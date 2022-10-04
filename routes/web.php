@@ -25,3 +25,4 @@ Route::get('products', [App\Http\Controllers\ProductController::class, 'index'])
 Route::get('buy/{product}', [App\Http\Controllers\ProductController::class, 'buy'])->name('buy');
 Route::post('confirm', [App\Http\Controllers\ProductController::class, 'confirm'])->name('confirm');
 Route::get('checkout', [App\Http\Controllers\ProductController::class, 'checkout'])->name('checkout');
+Route::get('pay', [App\Http\Controllers\ProductController::class, 'pay'])->name('pay');
