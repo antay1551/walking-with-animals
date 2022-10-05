@@ -69,11 +69,27 @@ class ProductController extends Controller
             ->latest()
             ->firstOrFail();
 
-        return view('product.checkout', compact('order'));
+        $paymentIntent = auth()->user()->createSetupIntent();
+
+        return view('product.checkout', compact('order', 'paymentIntent'));
     }
 
-    public function pay()
+    public function pay(Request $request)
     {
-        return view('product.checkout');
+        $user = auth()->user();
+        $paymentMethod = $request->get('payment_method');
+        $order = Order::query()->where('user_id', $user->id)->findOrFail($request->get('order_id'));
+
+        try {
+            $user->createOrGetStripeCustomer();
+            $user->updateDefaultPaymentMethod($paymentMethod);
+            $user->charge($order->price, $paymentMethod);
+            $order->update(['payed_at' => now()]);
+
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+
+        return redirect()->route('success');
     }
 }
