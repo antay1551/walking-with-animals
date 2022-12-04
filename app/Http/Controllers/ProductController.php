@@ -84,8 +84,6 @@ class ProductController extends Controller
             $user->createOrGetStripeCustomer();
             $user->updateDefaultPaymentMethod($paymentMethod);
             $user->charge($order->price, $paymentMethod);
-            $order->update(['payed_at' => now()]);
-
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

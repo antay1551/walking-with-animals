@@ -27,3 +27,4 @@ Route::post('confirm', [App\Http\Controllers\ProductController::class, 'confirm'
 Route::get('checkout', [App\Http\Controllers\ProductController::class, 'checkout'])->name('checkout');
 Route::post('pay', [App\Http\Controllers\ProductController::class, 'pay'])->name('pay');
 Route::view('success', 'product.success')->name('success');
+Route::stripeWebhooks('stripe-webhook');
